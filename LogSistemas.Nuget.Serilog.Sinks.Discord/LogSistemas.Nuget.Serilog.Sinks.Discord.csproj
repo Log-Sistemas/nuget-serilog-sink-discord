@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Serilog discord sink with custom props</Title>
+    <Description>A serilog sink that sends discords webhook message with custom properties from serilog event</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageOutputPath>..\Packages</PackageOutputPath>
+    <PackageProjectUrl>https://github.com/Log-Sistemas/nuget-serilog-sink-discord</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Log-Sistemas/nuget-serilog-sink-discord</RepositoryUrl>
+    <PackageIcon>Logo_Log_Sistemas.png</PackageIcon>
+    <Version>1.0.2</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Logo_Log_Sistemas.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Discord.Net.Webhook" Version="3.11.0" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
