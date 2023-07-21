@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Serilog;
+﻿using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
 
@@ -11,10 +9,10 @@ namespace LogSistemas.Nuget.Serilog.Sinks.Discord
         public static LoggerConfiguration Discord(
                 this LoggerSinkConfiguration loggerConfiguration,
                 string webhookUrl,
-                IEnumerable<ClaimConfig> claims = null,
-                LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose)
+                LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose,
+                params Property[] propertiesFromLog)
         {
-            return loggerConfiguration.Sink(new Sink(webhookUrl, claims, restrictedToMinimumLevel));
+            return loggerConfiguration.Sink(new Sink(webhookUrl, restrictedToMinimumLevel, propertiesFromLog));
         }
     }
 }

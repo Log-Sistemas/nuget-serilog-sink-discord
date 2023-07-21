@@ -9,19 +9,19 @@ using Serilog.Events;
 
 namespace LogSistemas.Nuget.Serilog.Sinks.Discord
 {
-    internal class Sink : ILogEventSink
+    public class Sink : ILogEventSink
     {
         private readonly string _webhookUrl;
-        private readonly IEnumerable<ClaimConfig> _claims;
+        private readonly IEnumerable<Property> _propertiesFromLog;
         private readonly LogEventLevel _restrictedToMinimumLevel;
 
         public Sink(
             string webhookUrl,
-            IEnumerable<ClaimConfig> claims = null,
-            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information)
+            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information,
+            params Property[] propertiesFromLog)
         {
             _webhookUrl = webhookUrl;
-            _claims = claims;
+            _propertiesFromLog = propertiesFromLog;
             _restrictedToMinimumLevel = restrictedToMinimumLevel;
         }
 
@@ -39,48 +39,48 @@ namespace LogSistemas.Nuget.Serilog.Sinks.Discord
                 return;
 
             EmbedBuilder embedBuilder = new();
-            DiscordWebhookClient webHook = new(_webhookUrl);
+            using DiscordWebhookClient client = new(_webhookUrl);
             try
             {
                 if (logEvent.Exception != null)
                 {
                     embedBuilder
                         .WithColor(255, 0, 0)
-                        .WithDescription($"StackTrace: {FormatMessage(logEvent.Exception.StackTrace!, 4096)}")//More length
                         .WithTitle(":x: Exception")
+                        .WithDescription($"StackTrace: {FormatMessage(logEvent.Exception.StackTrace!, 4096)}")//More length
                         .AddField("Type:", $"```{logEvent.Exception.GetType().FullName}```")
                         .AddField("Message:", FormatMessage(logEvent.Exception.Message, 1000))
-                        .AddField("ActionName", FormatMessage(logEvent.GetPropValueOrDefault("ActionName"), 200));
+                        .AddField("Log message:", FormatMessage(logEvent.RenderMessage(), 1000))
+                        ;
                 }
                 else
                 {
                     SpecifyTitleLevel(logEvent.Level, embedBuilder);
                     embedBuilder
-                        .WithDescription(FormatMessage(logEvent.RenderMessage(), 240))
-                        .AddField("ActionName", FormatMessage(logEvent.GetPropValueOrDefault("ActionName"), 200))
-                        .AddField("CorrelationId", FormatMessage(logEvent.GetPropValueOrDefault("CorrelationId"), 200));
+                        .WithDescription(FormatMessage(logEvent.RenderMessage(), 4096));
                 }
 
-                if (_claims is not null)
+                if (_propertiesFromLog is not null)
                 {
-                    foreach (ClaimConfig item in _claims)
+                    foreach (Property item in _propertiesFromLog)
                     {
                         embedBuilder.AddField(
-                            name: item.DisplayTitle,
+                            name: item.Display,
                             value: FormatMessage(logEvent.GetPropValueOrDefault(item.Name), 1000));
                     }
                 }
 
-                webHook.SendMessageAsync(null, false, new Embed[] { embedBuilder.Build() })
+                client.SendMessageAsync(null, false, new Embed[] { embedBuilder.Build() })
                     .GetAwaiter()
                     .GetResult();
             }
             catch (Exception ex)
             {
-                webHook.SendMessageAsync(
+                client.SendMessageAsync(
                     $"ooo snap, {ex.Message}", false)
                     .GetAwaiter()
                     .GetResult();
+                throw;
             }
         }
 
@@ -155,15 +155,15 @@ namespace LogSistemas.Nuget.Serilog.Sinks.Discord
         }
     }
 
-    public class ClaimConfig
+    public class Property
     {
-        public ClaimConfig(string name, string displayTitle)
+        public Property(string name, string display)
         {
             Name = name;
-            DisplayTitle = displayTitle;
+            Display = display;
         }
 
-        public string Name { get; set; }
-        public string DisplayTitle { get; set; }
+        public string Name { get; }
+        public string Display { get; }
     }
 }
