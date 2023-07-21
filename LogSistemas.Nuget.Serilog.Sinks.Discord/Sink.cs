@@ -46,7 +46,7 @@ namespace LogSistemas.Nuget.Serilog.Sinks.Discord
                 {
                     embedBuilder
                         .WithColor(255, 0, 0)
-                        .WithDescription($"StackTrace: {FormatMessage(logEvent.Exception.StackTrace!, 1000)}")//More length
+                        .WithDescription($"StackTrace: {FormatMessage(logEvent.Exception.StackTrace!, 4096)}")//More length
                         .WithTitle(":x: Exception")
                         .AddField("Type:", $"```{logEvent.Exception.GetType().FullName}```")
                         .AddField("Message:", FormatMessage(logEvent.Exception.Message, 1000))
