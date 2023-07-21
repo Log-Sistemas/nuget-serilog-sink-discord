@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSistemas.Nuget.Serilog.Sinks.Discord", "LogSistemas.Nuget.Serilog.Sinks.Discord\LogSistemas.Nuget.Serilog.Sinks.Discord.csproj", "{56367134-6825-45D4-9618-38B9EE5D6C08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{AFFAD4A5-9BF6-43B8-95AB-D2E18CCD03F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{56367134-6825-45D4-9618-38B9EE5D6C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56367134-6825-45D4-9618-38B9EE5D6C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56367134-6825-45D4-9618-38B9EE5D6C08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFFAD4A5-9BF6-43B8-95AB-D2E18CCD03F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFFAD4A5-9BF6-43B8-95AB-D2E18CCD03F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFFAD4A5-9BF6-43B8-95AB-D2E18CCD03F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFFAD4A5-9BF6-43B8-95AB-D2E18CCD03F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
