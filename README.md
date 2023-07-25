@@ -24,16 +24,11 @@ You can customize
 
 ```C#
 .WriteTo.Discord(
-	webhookUrl: discordWebhookUrl,
-	claims: new List<ClaimConfig>{
-		new ClaimConfig{
-			Name = "RequestId",
-			DisplayTitle = "ID from request"
-		},
-		new ClaimConfig{
-			Name = "RequestPath",
-			DisplayTitle = "PATH from request"
-		},
-	}
-	restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning)
+	webhookUrl: "",
+	restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+	new Property("location", "User city"),
+	new Property("correlationid", "Correlation-id"),
+	new Property("user-id", "Invalid key"))
 ```
+
+Those properties should be enriched your log. See sample.
