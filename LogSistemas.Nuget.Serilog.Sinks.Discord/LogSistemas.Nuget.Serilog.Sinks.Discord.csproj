@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/Log-Sistemas/nuget-serilog-sink-discord</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Log-Sistemas/nuget-serilog-sink-discord</RepositoryUrl>
     <PackageIcon>Logo_Log_Sistemas.png</PackageIcon>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
