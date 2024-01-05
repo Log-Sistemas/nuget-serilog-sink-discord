@@ -47,7 +47,7 @@ namespace LogSistemas.Nuget.Serilog.Sinks.Discord
                     embedBuilder
                         .WithColor(255, 0, 0)
                         .WithTitle(":x: Exception")
-                        .WithDescription($"StackTrace: {FormatMessage(logEvent.Exception.StackTrace!, 4096)}")//More length
+                        .WithDescription(FormatMessage($"StackTrace: {logEvent.Exception.StackTrace!}", 4096))
                         .AddField("Type:", $"```{logEvent.Exception.GetType().FullName}```")
                         .AddField("Message:", FormatMessage(logEvent.Exception.Message, 1000))
                         .AddField("Log message:", FormatMessage(logEvent.RenderMessage(), 1000))
@@ -125,16 +125,19 @@ namespace LogSistemas.Nuget.Serilog.Sinks.Discord
 
         public static string FormatMessage(string message, int maxLenght)
         {
-            if (message is null)
-                return null;
+            const int LENGHT_TRIPLE_QUOTES = 6;
+            const int LENGHT_ELLIPSIS = 4;
+            int finalMaxLenght = maxLenght - LENGHT_TRIPLE_QUOTES - LENGHT_ELLIPSIS;
 
-            if (message.Length > maxLenght)
-                message = $"{message.Substring(0, maxLenght)} ...";
+            if (string.IsNullOrWhiteSpace(message))
+                return message;
 
-            if (!string.IsNullOrWhiteSpace(message))
-                message = $"```{message}```";
+            string quotedMessage = $"```{message}```";
 
-            return message;
+            if (quotedMessage.Length > maxLenght)
+                quotedMessage = $"```{message.Substring(0, finalMaxLenght)} ...```";
+
+            return quotedMessage;
         }
 
         private static bool ShouldLogMessage(
