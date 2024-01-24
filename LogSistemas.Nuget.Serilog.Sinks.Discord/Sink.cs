@@ -12,15 +12,18 @@ namespace LogSistemas.Nuget.Serilog.Sinks.Discord
     public class Sink : ILogEventSink
     {
         private readonly string _webhookUrl;
+        private readonly bool _sendExceptionDetails;
         private readonly IEnumerable<Property> _propertiesFromLog;
         private readonly LogEventLevel _restrictedToMinimumLevel;
 
         public Sink(
             string webhookUrl,
+            bool sendExceptionDetails = true,
             LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information,
             params Property[] propertiesFromLog)
         {
             _webhookUrl = webhookUrl;
+            _sendExceptionDetails = sendExceptionDetails;
             _propertiesFromLog = propertiesFromLog;
             _restrictedToMinimumLevel = restrictedToMinimumLevel;
         }
@@ -47,11 +50,14 @@ namespace LogSistemas.Nuget.Serilog.Sinks.Discord
                     embedBuilder
                         .WithColor(255, 0, 0)
                         .WithTitle(":x: Exception")
-                        .WithDescription(FormatMessage($"StackTrace: {logEvent.Exception.StackTrace!}", 4096))
-                        .AddField("Type:", $"```{logEvent.Exception.GetType().FullName}```")
-                        .AddField("Message:", FormatMessage(logEvent.Exception.Message, 1000))
-                        .AddField("Log message:", FormatMessage(logEvent.RenderMessage(), 1000))
-                        ;
+                        .AddField("Exception message:", FormatMessage(logEvent.Exception.Message, 1000))
+                        .AddField("Log message:", FormatMessage(logEvent.RenderMessage(), 1000));
+                    if (_sendExceptionDetails)
+                    {
+                        embedBuilder
+                            .WithDescription(FormatMessage($"StackTrace: {logEvent.Exception.StackTrace!}", 4096))
+                            .AddField("Type:", $"```{logEvent.Exception.GetType().FullName}```");
+                    }
                 }
                 else
                 {

@@ -10,6 +10,7 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .WriteTo.Discord(
         webhookUrl: "",
+        sendExceptionDetails: false,
         restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
         new Property("location", "User city"),
         new Property("correlationid", "Correlation-id"),
