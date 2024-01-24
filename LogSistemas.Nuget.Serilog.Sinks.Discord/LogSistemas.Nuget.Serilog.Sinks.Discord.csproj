@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/Log-Sistemas/nuget-serilog-sink-discord</RepositoryUrl>
     <PackageIcon>Logo_Log_Sistemas.png</PackageIcon>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<Version>1.0.3</Version>
+	<Version>1.1.0</Version>
 	
   </PropertyGroup>
 
